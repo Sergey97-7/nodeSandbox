@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div
+    form( id="formElem" class="user-form" method='post' action='')
+      p File
+      input(type="file" name='file' accept=".txt")
+      button(type="submit") Send file!
+script(type='text/javascript').
+  formElem.onsubmit = async(e) => {
+    e.preventDefault();
+    console.log("yep");
+  let response = await fetch('https://localhost:3000/users/sendfdeg/file1', {
+    method: 'POST',
+    body: { form:new FormData(formElem),
+    test: 'test'
+      }
+  });
+
+  let result = await response.json();
+
+  alert(result.message);
+  };
+
+
+//-   {
+//- b: new FormData(formElem),
+//- test: 'test'
+//-   }

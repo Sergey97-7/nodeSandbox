@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div
+    form(class="user-form" method='post' action='')
+      p Name
+      input(type="text" name='name')
+      p Surname
+      input(type="text" name='lastName')
+      p Age
+      input(type="text" name='age')
+      p Description
+      input(type="text" name='description')
+      button(type="submit") Create user!
