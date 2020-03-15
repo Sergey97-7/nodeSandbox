@@ -8,7 +8,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const dataRouter = require('./routes/data');
 const zlibRouter = require('./routes/zlib');
-
+const serializeRouter = require('./routes/serialize');
 const app = express();
 const cluster = require('cluster')
 const child_process = require('child_process');
@@ -44,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/data', dataRouter);
 app.use('/zlib', zlibRouter);
+app.use('/serialize', serializeRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
