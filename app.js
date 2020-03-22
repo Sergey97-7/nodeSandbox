@@ -9,6 +9,7 @@ const usersRouter = require('./routes/users');
 const dataRouter = require('./routes/data');
 const zlibRouter = require('./routes/zlib');
 const serializeRouter = require('./routes/serialize');
+const fileUpload = require('express-fileupload');
 const app = express();
 const cluster = require('cluster')
 const child_process = require('child_process');
@@ -28,6 +29,8 @@ async function connectToDbMyRedis() {}
 async function connectToDbMemcached() {}
 async function connectToDbMySql() {}
 async function connectToDbPostgresql() {}
+async function connectToDbFireBase() {}
+async function connectToAzure() {}
 
 connectToDbMongo()
     // view engine setup
@@ -39,7 +42,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(fileUpload({
+    createParentPath: true
+}));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/data', dataRouter);

@@ -1,0 +1,51 @@
+extends layout
+block content
+    div
+            p File
+            input( id="form3" type="file" name='file1' accept=".txt")
+            input( id="iImg" type="file" name='file2' accept=".png, .jpg, .jpeg")
+            input( id="iPdf" type="file" name='file3' accept=".pdf")
+            input( id="flag" type="checkbox" name='status')
+            button(id="btn") Send file!
+                script(type='text/javascript').
+                    btn.onclick = async(e) => {
+                         e.preventDefault();
+                        const reader1 = new FileReader()
+                        reader1.onload = (e )=> {
+                            console.log('result: ', e.target.result)
+                        }
+                        const reader2 = new FileReader()
+                        reader2.onload = (e )=> {
+                            const img = new Image()
+                            img.src = e.target.result
+                            document.body.appendChild(img)
+
+                        }
+                         const reader3 = new FileReader()
+                        reader3.onload = (e )=> {
+                            const div = document.createElement('div');
+                            div.innerText = e.target.result;
+                            //- document.body.appendChild(div)
+                        }
+                        const formData = new FormData();
+
+                        if(form3.files[0]) {
+                           reader1.readAsText(form3.files[0]);
+                           formData.append('txt',form3.files[0]);
+                        }
+                        if(iImg.files[0]) {
+                           reader2.readAsDataURL(iImg.files[0]);
+                             formData.append('img',iImg.files[0]);
+                        }
+                         if(iPdf.files[0]) {
+                           reader3.readAsDataURL(iPdf.files[0]);
+                             formData.append('pdf',iPdf.files[0]);
+                        }
+                        formData.append('status', flag.checked);
+                               fetch('/data/generateFile', {
+                                    method: 'POST',
+                                    body: formData
+                                        }).then((res)=> {
+                                            console.log('response.json();',res.json())
+                                        });
+                                            };

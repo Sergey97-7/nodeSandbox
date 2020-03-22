@@ -8,13 +8,9 @@ const schema = new Schema({
         type: Buffer,
         contentType: String
     },
-    image: {
+    img: {
         type: Buffer,
         contentType: String
     }
-    // ,
-    // test: {
-    //     type: Blob
-    // }
 })
 module.exports = model('Data', schema)
