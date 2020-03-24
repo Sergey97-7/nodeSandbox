@@ -1,0 +1,17 @@
+extends layout
+block content
+    div
+    p File
+    button(id="btn") Send file!
+        script(type='text/javascript').
+            btn.onclick = async(e) => {       
+                       fetch('/data/file3/6testImg', {
+                            method: 'GET',
+                                }).then((res)=>  res.json()
+                                 ).then((res)=> {
+                                      const img = new Image()
+                                    img.src = `/data/img/path/${res.path}name/${res.name}`
+                                    console.log(img)
+                                    document.body.appendChild(img)
+                                });
+                                    };

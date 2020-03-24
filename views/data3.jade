@@ -1,0 +1,21 @@
+extends layout
+block content
+    div
+            p File
+            input( id="form3" type="file" name='file1' accept=".txt")
+            input( id="iImg" type="file" name='iImg' accept=".png, .jpg, .jpeg")
+            input( id="iPdf" type="file" name='file3' accept=".pdf")
+            input( id="flag" type="checkbox" name='status')
+            button(id="btn") Send file!
+                script(type='text/javascript').
+                    btn.onclick = async(e) => {
+                               fetch('/data/generateFile2', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-type': 'image/png'
+                                    },
+                                    body: iImg.files[0]
+                                        }).then((res)=> {
+                                            console.log('response.json();', res.json())
+                                        });
+                                            };

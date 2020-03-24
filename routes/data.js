@@ -4,6 +4,7 @@ const router = express.Router();
 const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 const Data = require("../models/Data");
 const Files = require("../models/Files");
+const zlib = require('zlib');
 
 router.get('/text', async(req, res, next) => {
     const buffer = Buffer.from(text)
@@ -86,7 +87,7 @@ let Ipath = 3;
 router.post('/generateFile', async(req, res, next) => {
     const path = `./fileCollection${Ipath % 2 ? 1 : 2}/`;
     let schema = [];
-    if (req.body.status === true) {
+    if (req.body.status === 'true') {
         Object.keys(req.files).forEach((file) => {
             req.files[file].mv(path + Ipath + req.files[file].name);
             schema.push({
@@ -110,6 +111,11 @@ router.post('/generateFile', async(req, res, next) => {
         res.send('ok')
     }
 })
+router.post('/generateFile2', async(req, res, next) => {
+    req.pipe(fs.createWriteStream('./text.png'))
+    res.send({ ok: 'ok' })
+
+})
 router.get('/file/:file', async(req, res, next) => {
     const { file } = req.params;
     const result = await Files.findOne({ 'files.name': { $regex: new RegExp(file) } });
@@ -121,5 +127,21 @@ router.get('/file2/:file', async(req, res, next) => {
     const { path, name } = result.files[0];
     let content = await fs.promises.readFile(path + name);
     res.send(!!content ? { content } : 'Nothing found!');
+})
+router.get('/file3/:file', async(req, res, next) => {
+    const { file } = req.params;
+    const result = await Files.findOne({ 'files.name': { $regex: new RegExp(file) } });
+    const { path, name } = result.files[1];
+    res.send(!!result ? { path, name } : 'Nothing found!');
+})
+router.get('/img/path/:path/name/:name', async(req, res, next) => {
+    const { path, name } = req.params;
+    fs.createReadStream(`./${path}/${name}`).pipe(res)
+})
+router.get('/test', async(req, res) => {
+    res.render('file');
+})
+router.get('/test2', async(req, res) => {
+    res.render('data3');
 })
 module.exports = router;
